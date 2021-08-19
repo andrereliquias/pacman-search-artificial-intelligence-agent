@@ -99,21 +99,56 @@ def depthFirstSearch(problem):
 
     
 
-    def testeVini():
+    def testeVini(): #python2 pacman.py -l tinyMaze -p SearchAgent
         accessed = []
         moveOrder = []
-        steps = Stack()
-        inicial = problem.getStartState()
-        atual = inicial
-        def search(estado):
-            for nodes in problem.getSuccessors(estado):
-                print "temp"
+        steps = []
+        inicial = []
+        inicial.append(problem.getStartState())
+        inicial.append('null')
+        inicial.append('null')
+        #accessed.append(inicial)
 
+        def procura(atual):
+            if atual in accessed:
+                print "atual nos acessados"
+                return False
+            else:
+                accessed.append(atual[0])
+                steps.append(atual)
+                print "acessou e andou para:", atual
 
-        if problem.isGoalState(atual):
-            print "top"
+            if problem.isGoalState(atual[0]):
+                return True
+            filhos = problem.getSuccessors(atual[0])
+            print "filhos do atual", filhos
+            if filhos:
+                for filho in filhos:
+                    print "acessando filho: ", filho
+                    if not filho[0] in accessed:
+                        if procura(filho):
+                            return True
+                        else:
+                            temp = steps.pop()
+                            print "passo pra tras, tirando:", temp[0]
+                            return False
+                    else:
+                        print "filho ja acessado"
+            else:
+                return False
+
+        if problem.isGoalState(inicial[0]):
+            return []
         else:
-            print "oh oh"
+            state = procura(inicial)
+            print "estado do search: ", state
+            for passo in steps:
+                moveOrder.append(passo[1])
+            print "ordem de movimentos:", moveOrder
+            if moveOrder:
+                return moveOrder
+            else:
+                return []
             
 
 
@@ -237,7 +272,7 @@ def depthFirstSearch(problem):
         # print accessed
         # util.raiseNotDefined()
 
-    return andre()
+    return testeVini()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
