@@ -153,16 +153,18 @@ def depthFirstSearch(problem):
 
 
     def andre():
-        accessed = []
-        moveTo = []
         stack = Stack()
+        accessed = []
+
         aux = []
         aux.append(problem.getStartState())
         aux.append('nil')
         aux.append('nil')
-        print aux
+        # aux => [(5, 5), 'nil', 'nil']
         stack.push(aux)
-        lista = []
+        
+        mappedArray = []
+        # mappedArray => Array mapeado com pai e filhos
         while not stack.isEmpty():
             # armazena o no como acessado
             currentNode = stack.pop()
@@ -170,109 +172,61 @@ def depthFirstSearch(problem):
             if not currentNode in accessed:
                 # seta ele como acessado
                 accessed.append(currentNode)
-                # lista.append(currentNode)
                 print "Estou acessando o no: ", currentNode[0]
+                
+                # caso seja o no objetivo
                 if problem.isGoalState(currentNode[0]):
                     print "Chegou ao Final"
-
                     stack.push(currentNode)
-
-                    # aux2.append(currentNode)
-                    # dictionary[accessed[-2][0]] = aux2
                     break
                 else:
+                    # caso nao seja o objetivo pega os sucessores dele
                     for info in problem.getSuccessors(currentNode[0]):
+                        # caso o sucessor analisado ainda nao foi acessado
                         if not info in accessed:
                             print "Vou colocar na pilha: ", info
-                            t = info
-                            t += (currentNode, )
-                            lista.append(t)
-                            # info += (currentNode, )
-                            # print "infoooooooooooo:", info 
-                            # break
-                            # info.append(currentNode[0])
+                            tupleAux = None
+                            tupleAux = info
+                            tupleAux += (currentNode, )
+                            mappedArray.append(tupleAux)
                             stack.push(info)
-                            # aux2.append(info)
-                    # dictionary[currentNode[0]] = aux2
         
-
-        print accessed
         accessed.pop(0)
-        print '----------- Lista com pai e filho em baixo'
-        print lista
+        print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
 
-        go_to = []    
+        print "\nArray mapeado cru: ", mappedArray
 
-        auxiliar = [x for x in lista if x[0] == (1, 1)]
-        go_to.append(auxiliar[0][3][1])
-        aux2 = auxiliar[0][3][0]
-        print aux2
-        print aux2
-        print aux2
-
-        i = True
-        while i:
-            print "COMECO: ", aux2
-
-            auxiliar = [x for x in lista if x[0] == aux2]
-            print "auxiliar:  ", auxiliar
-            go_to.append(auxiliar[0][3][1])
-            aux2 = auxiliar[0][3][0]
-            print "FINAL: ", aux2
-            if aux2 == problem.getStartState():
-                auxiliar = [x for x in lista if x[0] == aux2]
-                go_to.insert(0, auxiliar[0][3][1])
-                go_to.remove('nil')
-                print go_to
-                i = False
-        print len(go_to)
-        print len(go_to)
-        print len(go_to)
-        print len(go_to)
-        print len(go_to)
-        print go_to[::-1]
-        return go_to[::-1]
-
-        for element in lista:
-            print "--Elemento--"
-            print element
-            print "--Elemento--"
-    
-        for element in accessed:
-            moveTo.append(element[1])
+        moveTo = []    
         
-        print len(moveTo)
-        print len(moveTo)
+        # pega as informacoes do no objetivo
+        print "No objetivo: ", (1, 1)
+        currentFather = [x for x in mappedArray if x[0] == (1, 1)]
+        moveTo.append(currentFather[0][3][1])
+        currentCoordinate = currentFather[0][3][0]
 
-        print moveTo
-        print "Caminhos para mover acima ---------"
-        return moveTo
-
-        # from util import Stack
-        # accessed = []
-        # moveTo = []
-        # stack = Stack()
-        # stack.push(problem.getStartState())
+        print "Realizando o mapeamento: "
+        while True:
+            print "No atual: ", currentCoordinate
+            currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
+            moveTo.append(currentFather[0][3][1])
+            currentCoordinate = currentFather[0][3][0]
+            print "Encontrado por: ", currentCoordinate
+            # caso encontre o inicio do problema
+            if currentCoordinate == problem.getStartState():
+                # procura o primeiro movimento realizado e insere no comeco do array  
+                currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
+                moveTo.insert(0, currentFather[0][3][1])
+                print "----------------- Primeiro mapeamento", currentFather
+                moveTo.remove('nil')
+                break
         
-        # while not stack.isEmpty():
-        #     # Armazena o no como acessado
-        #     currentNode = stack.pop()
+        # moveTo.pop()
+        print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
+        print "Tamanho: ", len(moveTo), "\n"
 
-        #     # Se esse no nao foi acessado
-        #     if not currentNode in accessed:
+        return moveTo[::-1]
 
-        #         accessed.append(currentNode)
-        #         print "Estou acessando o ", currentNode
-        #         if problem.isGoalState(currentNode):
-        #             print "Chegou ao Final, oq fazer?"
-        #         else:
-        #             for info in problem.getSuccessors(currentNode):
-        #                 print "Vou colocar na pilha: ", info[0]
-        #                 stack.push(info[0])
-        # print accessed
-        # util.raiseNotDefined()
-
-    return testeVini()
+    return andre()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
