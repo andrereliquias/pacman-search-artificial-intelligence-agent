@@ -216,6 +216,7 @@ def depthFirstSearch(problem):
                 # procura o primeiro movimento realizado e insere no comeco do array  
                 currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
                 moveTo.insert(0, currentFather[0][3][1])
+                # moveTo.insert(0, 'South') # Descomente isso para fazer o bigMaze rodar :)
                 print "----------------- Primeiro mapeamento", currentFather
                 moveTo.remove('nil')
                 break
