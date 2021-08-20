@@ -105,8 +105,7 @@ def depthFirstSearch(problem):
         steps = []
         inicial = []
         inicial.append(problem.getStartState())
-        inicial.append('null')
-        inicial.append('null')
+        print "inicial e:", inicial
         #accessed.append(inicial)
 
         def procura(atual):
@@ -153,6 +152,9 @@ def depthFirstSearch(problem):
 
 
     def andre():
+        teste = []
+        teste2 = []
+
         stack = Stack()
         accessed = []
 
@@ -162,7 +164,7 @@ def depthFirstSearch(problem):
         aux.append('nil')
         # aux => [(5, 5), 'nil', 'nil']
         stack.push(aux)
-        
+        before_goal = 0
         mappedArray = []
         # mappedArray => Array mapeado com pai e filhos
         while not stack.isEmpty():
@@ -177,21 +179,40 @@ def depthFirstSearch(problem):
                 # caso seja o no objetivo
                 if problem.isGoalState(currentNode[0]):
                     print "Chegou ao Final"
+                    before_goal = accessed[-2]
+                    print accessed[-2]
+                    # input()
                     stack.push(currentNode)
                     break
                 else:
                     # caso nao seja o objetivo pega os sucessores dele
                     for info in problem.getSuccessors(currentNode[0]):
                         # caso o sucessor analisado ainda nao foi acessado
+                        tupleAux = None
                         if not info in accessed:
                             print "Vou colocar na pilha: ", info
-                            tupleAux = None
                             tupleAux = info
                             tupleAux += (currentNode, )
+                            # teste2.append(currentNode)
+                            # teste2.append(info)
+                            # teste = teste2
+                            # mappedArray.append(teste)
                             mappedArray.append(tupleAux)
                             stack.push(info)
         
         accessed.pop(0)
+        # for x in mappedArray:
+        #     print x
+        #     print "-----"
+
+        # print "Start:", problem.getStartState()
+        # currentFather = [x for x in mappedArray if x[0] == (35, 1)] #(35, 1)
+        # print "PAPAPAPPAPAPAPAPAPPA"
+        # for x in currentFather:
+        #     print x
+        #     print "-----"
+        # print "PAPAPAPPAPAPAPAPAPPA"
+        # input()
         print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
 
         print "\nArray mapeado cru: ", mappedArray
@@ -214,11 +235,28 @@ def depthFirstSearch(problem):
             # caso encontre o inicio do problema
             if currentCoordinate == problem.getStartState():
                 # procura o primeiro movimento realizado e insere no comeco do array  
-                currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
-                moveTo.insert(0, currentFather[0][3][1])
-                # moveTo.insert(0, 'South') # Descomente isso para fazer o bigMaze rodar :)
-                print "----------------- Primeiro mapeamento", currentFather
+                # currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
+                # moveTo.insert(0, currentFather[0][3][1])
+                # # moveTo.insert(0, 'South') # Descomente isso para fazer o bigMaze rodar :)
+                # print "----------------- Primeiro mapeamento", currentFather
                 moveTo.remove('nil')
+                # moveTo.insert(0, before_goal[1])
+                print before_goal
+                currentFather = [x for x in mappedArray if x[0] == (1, 1)]
+                print currentFather
+                print "PAPAPAPPAPAPAPAPAPPA"
+                for x in currentFather:
+                    moveTo.insert(0, x[1])
+                    print "Custo atual para ", x[1], problem.getCostOfActions(moveTo) 
+                    if problem.getCostOfActions(moveTo[::-1]) < 999999:
+                        print "vou dar bom"
+                        break
+                    else:
+                        moveTo.pop(0)
+                    print x
+                    print "-----"
+                print "PAPAPAPPAPAPAPAPAPPA"
+                # input()
                 break
         
         # moveTo.pop()
@@ -231,8 +269,37 @@ def depthFirstSearch(problem):
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # pseudo-codigo
+    """BuscaEmLargura:
+        escolha uma raiz s de G
+        marque s
+        insira s em F
+        enquanto F nao esta vazia faca
+            seja v o primeiro vertice de F
+            para cada w pertence listaDeAdjacencia de v faca
+                se w nao esta marcado entao
+                    visite aresta entre v e w
+                    marque w
+                    insira w em F
+                senao se w pertence F entao
+                    visite aresta entre v e w
+                fim se
+            fim para
+            retira v de F
+        fim enquanto"""
+
+    #Codigo
+    """
+    def vini():
+        inicial = []
+        inicial.append(problem.getStartState())
+        pri
+        visited = []
+        visited.append(inicial)
+        while visited:
+            filhos = getSuccessors(visited[0][0])
+    """
+    return []
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
