@@ -287,19 +287,58 @@ def breadthFirstSearch(problem):
             fim para
             retira v de F
         fim enquanto"""
+    
+    def andre():
+        from util import Queue  
+        queue = Queue
+        aux = []
+        aux.append(problem.getStartState())
+        aux.append('nil')
+        aux.append('nil')
+        queue.push(aux)
+
+        visited = []
+        while not queue.isEmpty():
+            currentNode = queue.pop()
+            if not currentNode in visited:
+                visited.append(currentNode)
+                if problem.isGoalState(currentNode[0]):
+                    break
+                for children in problem.getSuccessors(currentNode[0]):
+                    if not children in visited:
+                        visited.append(children)
+                        queue.push(children)
 
     #Codigo
-    """
+
+    # python2 pacman.py -l mediumMaze -p SearchAgent -a fn=bfs
+    # python2 pacman.py -l bigMaze -p SearchAgent -a fn=bfs -z .5
+    # se ficar muito lento acrescente a flag --frameTime 0
+    
     def vini():
         inicial = []
+        visitados = []
         inicial.append(problem.getStartState())
-        pri
-        visited = []
-        visited.append(inicial)
-        while visited:
-            filhos = getSuccessors(visited[0][0])
-    """
-    return []
+        inicial.append('null')
+        inicial.append(0)
+
+        fila = []
+        fila.append(inicial)
+        while len(fila) > 0:
+            noh = fila.pop(0)
+            visitados[noh] = 1
+            print(mD[noh])
+
+            if problem.isGoalState(noh[0]):
+                print "foi"
+                break
+            for n in grafo[noh]:
+                if visitados[n] == 0:
+                    visitados[n] = 1
+                    fila.append(n)
+        return []     
+        
+    return vini()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
