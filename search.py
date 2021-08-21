@@ -301,6 +301,7 @@ def breadthFirstSearch(problem):
         queue.push(aux)
         before_goal = 0
         mappedArray = []
+
         # mappedArray => Array mapeado com pai e filhos
         while not queue.isEmpty():
             # armazena o no como acessado
@@ -328,10 +329,6 @@ def breadthFirstSearch(problem):
                             print "Vou colocar na fila: ", info
                             tupleAux = info
                             tupleAux += (currentNode, )
-                            # teste2.append(currentNode)
-                            # teste2.append(info)
-                            # teste = teste2
-                            # mappedArray.append(teste)
                             # print type(info)
                             # print info[0]
                             # break
@@ -339,27 +336,87 @@ def breadthFirstSearch(problem):
                             queue.push(info)
         
         accessed.pop(0)
-        # for x in mappedArray:
-        #     print x
-        #     print "-----"
 
-        # print "Start:", problem.getStartState()
-        # currentFather = [x for x in mappedArray if x[0] == (35, 1)] #(35, 1)
-        # print "PAPAPAPPAPAPAPAPAPPA"
-        # for x in currentFather:
-        #     print x
-        #     print "-----"
-        # print "PAPAPAPPAPAPAPAPAPPA"
-        # input()
-        print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
+        # print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
 
         print "\nArray mapeado cru: ", mappedArray
 
         moveTo = []    
         
+        # def findGoal():
+        #     for x in mappedArray:
+        #         if x[0].isGoal():
+        #             return x
+        # print mappedArray[0][0]
+        # print mappedArray[0][0]
+        # print mappedArray[0][0]
+        # print type(mappedArray[0][0])
+        # print type(mappedArray[0][0])
+        # print type(mappedArray[0][0])
+        # print type(mappedArray[0][0])
+
+        if not type(mappedArray[0][0]) == type(tuple()):
+            return [0]
+            # currentFather = findGoal()
+            # # print currentFather[0]
+            # # print currentFather[1]
+            # # print currentFather[2]
+            # # print currentFather[3]
+            # moveTo.append(currentFather[1])
+            # print "PAI ATUAL !!!", currentFather[3]
+            # print "COORDENADA ATUAL!@!!!", currentFather[0]
+            # currentCoordinate = currentFather[0]
+            # # print currentCoordinate
+            # # print currentCoordinate
+            # # print currentCoordinate
+            # # print currentCoordinate
+            # print "Realizando o mapeamento: "
+            # while True:
+            #     print "\n\n\n"
+            #     print "No atual: ", currentCoordinate
+            #     print "ANTES DE QUEBRAR INFORERNO DEBUGGG", mappedArray[0][0]
+            #     print "\n\n\n\n\n\n"
+            #     currentFather = [x for x in mappedArray if x[0] is currentCoordinate]
+            #     print "currentFather", currentFather
+            #     print "paipaipaipaipaia", currentFather
+            #     print "paipaipaipaipaia", currentFather[0]
+            #     print "paipaipaipaipaia", currentFather[0][1]
+            #     moveTo.append(currentFather[0][1])
+
+            #     currentCoordinate = currentFather[0][0]
+            #     print "Encontrado por: ", currentCoordinate
+            #     # caso encontre o inicio do problema
+
+            #     print problem.getStartState()
+            #     if currentCoordinate is problem.getStartState():
+            #         moveTo.remove('nil')
+            #         print before_goal
+            #         currentFather = findGoal()
+            #         print currentFather
+            #         print "PAPAPAPPAPAPAPAPAPPA"
+            #         for x in currentFather:
+            #             moveTo.insert(0, x[0])
+            #             print "Custo atual para ", x[1], problem.getCostOfActions(moveTo) 
+            #             if problem.getCostOfActions(moveTo[::-1]) < 999999:
+            #                 print "vou dar bom"
+            #                 break
+            #             else:
+            #                 moveTo.pop(0)
+            #             print x
+            #             print "-----"
+            #         print "PAPAPAPPAPAPAPAPAPPA"
+            #         # input()
+            #         break
+            
+            # # moveTo.pop()
+            # print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
+            # print "Tamanho: ", len(moveTo), "\n"
+
+            # return moveTo[::-1]
+        else:
+            currentFather = [x for x in mappedArray if x[0] == (1, 1)]
+        # return
         # pega as informacoes do no objetivo
-        print "No objetivo: ", (1, 1)
-        currentFather = [x for x in mappedArray if x[0] == (1, 1)]
         moveTo.append(currentFather[0][3][1])
         currentCoordinate = currentFather[0][3][0]
 
@@ -371,14 +428,9 @@ def breadthFirstSearch(problem):
             currentCoordinate = currentFather[0][3][0]
             print "Encontrado por: ", currentCoordinate
             # caso encontre o inicio do problema
+
             if currentCoordinate == problem.getStartState():
-                # procura o primeiro movimento realizado e insere no comeco do array  
-                # currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
-                # moveTo.insert(0, currentFather[0][3][1])
-                # # moveTo.insert(0, 'South') # Descomente isso para fazer o bigMaze rodar :)
-                # print "----------------- Primeiro mapeamento", currentFather
                 moveTo.remove('nil')
-                # moveTo.insert(0, before_goal[1])
                 print before_goal
                 currentFather = [x for x in mappedArray if x[0] == (1, 1)]
                 print currentFather
@@ -437,7 +489,26 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    """
+    codigos do objeto problem:
+        getStartState(self)
+        isGoalState(self, state)
+        getSuccessors(self, state)
+        getCostOfActions(self, actions)
+    """
+    def vini():
+        acao = []
+        acao.append('South')
+        acao.append('South')
+        acao.append('West')
+        acao.append('West')
+        acao.append('West')
+        print "seila:", problem.getCostOfActions(acao)
+        return acao
+
+
+    return vini()
 
 def nullHeuristic(state, problem=None):
     """
