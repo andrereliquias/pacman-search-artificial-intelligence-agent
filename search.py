@@ -290,24 +290,118 @@ def breadthFirstSearch(problem):
     
     def andre():
         from util import Queue  
-        queue = Queue
+        queue = Queue()
+        accessed = []
+
         aux = []
         aux.append(problem.getStartState())
         aux.append('nil')
         aux.append('nil')
+        # aux => [(5, 5), 'nil', 'nil']
         queue.push(aux)
-
-        visited = []
+        before_goal = 0
+        mappedArray = []
+        # mappedArray => Array mapeado com pai e filhos
         while not queue.isEmpty():
+            # armazena o no como acessado
             currentNode = queue.pop()
-            if not currentNode in visited:
-                visited.append(currentNode)
+            # se esse no nao foi acessado
+            if not currentNode in accessed:
+                # seta ele como acessado
+                accessed.append(currentNode)
+                print "Estou acessando o no: ", currentNode[0]
+                
+                # caso seja o no objetivo
                 if problem.isGoalState(currentNode[0]):
+                    print "Chegou ao Final"
+                    before_goal = accessed[-2]
+                    print accessed[-2]
+                    # input()
+                    queue.push(currentNode)
                     break
-                for children in problem.getSuccessors(currentNode[0]):
-                    if not children in visited:
-                        visited.append(children)
-                        queue.push(children)
+                else:
+                    # caso nao seja o objetivo pega os sucessores dele
+                    for info in problem.getSuccessors(currentNode[0]):
+                        # caso o sucessor analisado ainda nao foi acessado
+                        tupleAux = None
+                        if not info in accessed:
+                            print "Vou colocar na fila: ", info
+                            tupleAux = info
+                            tupleAux += (currentNode, )
+                            # teste2.append(currentNode)
+                            # teste2.append(info)
+                            # teste = teste2
+                            # mappedArray.append(teste)
+                            # print type(info)
+                            # print info[0]
+                            # break
+                            mappedArray.append(tupleAux)
+                            queue.push(info)
+        
+        accessed.pop(0)
+        # for x in mappedArray:
+        #     print x
+        #     print "-----"
+
+        # print "Start:", problem.getStartState()
+        # currentFather = [x for x in mappedArray if x[0] == (35, 1)] #(35, 1)
+        # print "PAPAPAPPAPAPAPAPAPPA"
+        # for x in currentFather:
+        #     print x
+        #     print "-----"
+        # print "PAPAPAPPAPAPAPAPAPPA"
+        # input()
+        print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
+
+        print "\nArray mapeado cru: ", mappedArray
+
+        moveTo = []    
+        
+        # pega as informacoes do no objetivo
+        print "No objetivo: ", (1, 1)
+        currentFather = [x for x in mappedArray if x[0] == (1, 1)]
+        moveTo.append(currentFather[0][3][1])
+        currentCoordinate = currentFather[0][3][0]
+
+        print "Realizando o mapeamento: "
+        while True:
+            print "No atual: ", currentCoordinate
+            currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
+            moveTo.append(currentFather[0][3][1])
+            currentCoordinate = currentFather[0][3][0]
+            print "Encontrado por: ", currentCoordinate
+            # caso encontre o inicio do problema
+            if currentCoordinate == problem.getStartState():
+                # procura o primeiro movimento realizado e insere no comeco do array  
+                # currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
+                # moveTo.insert(0, currentFather[0][3][1])
+                # # moveTo.insert(0, 'South') # Descomente isso para fazer o bigMaze rodar :)
+                # print "----------------- Primeiro mapeamento", currentFather
+                moveTo.remove('nil')
+                # moveTo.insert(0, before_goal[1])
+                print before_goal
+                currentFather = [x for x in mappedArray if x[0] == (1, 1)]
+                print currentFather
+                print "PAPAPAPPAPAPAPAPAPPA"
+                for x in currentFather:
+                    moveTo.insert(0, x[1])
+                    print "Custo atual para ", x[1], problem.getCostOfActions(moveTo) 
+                    if problem.getCostOfActions(moveTo[::-1]) < 999999:
+                        print "vou dar bom"
+                        break
+                    else:
+                        moveTo.pop(0)
+                    print x
+                    print "-----"
+                print "PAPAPAPPAPAPAPAPAPPA"
+                # input()
+                break
+        
+        # moveTo.pop()
+        print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
+        print "Tamanho: ", len(moveTo), "\n"
+
+        return moveTo[::-1]
 
     #Codigo
 
@@ -338,7 +432,7 @@ def breadthFirstSearch(problem):
                     fila.append(n)
         return []     
         
-    return vini()
+    return andre()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
