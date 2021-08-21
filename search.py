@@ -96,9 +96,6 @@ def depthFirstSearch(problem):
     # ['South', 'South', 'West', 'South', 'West', 'West', 'South', 'West']
 
     from util import Stack
-
-    
-
     def testeVini(): #python2 pacman.py -l tinyMaze -p SearchAgent
         accessed = []
         moveOrder = []
@@ -149,12 +146,7 @@ def depthFirstSearch(problem):
             else:
                 return []
             
-
-
     def andre():
-        teste = []
-        teste2 = []
-
         stack = Stack()
         accessed = []
 
@@ -162,71 +154,43 @@ def depthFirstSearch(problem):
         aux.append(problem.getStartState())
         aux.append('nil')
         aux.append('nil')
-        # aux => [(5, 5), 'nil', 'nil']
-        stack.push(aux)
-        before_goal = 0
-        mappedArray = []
-        # mappedArray => Array mapeado com pai e filhos
+        stack.push(aux) # aux => [(5, 5), 'nil', 'nil']
+        mappedArray = [] # mappedArray => Array mapeado com pai e filhos
+
         while not stack.isEmpty():
-            # armazena o no como acessado
-            currentNode = stack.pop()
-            # se esse no nao foi acessado
-            if not currentNode in accessed:
-                # seta ele como acessado
-                accessed.append(currentNode)
+            currentNode = stack.pop() # armazena o no como acessado
+            if not currentNode in accessed: # se esse no nao foi acessado
+                accessed.append(currentNode) # seta ele como acessado
                 print "Estou acessando o no: ", currentNode[0]
-                
-                # caso seja o no objetivo
-                if problem.isGoalState(currentNode[0]):
+
+                if problem.isGoalState(currentNode[0]): # caso seja o no objetivo
                     print "Chegou ao Final"
-                    before_goal = accessed[-2]
-                    print accessed[-2]
-                    # input()
+                    print "No que encontrou o objetivo: ", accessed[-2]
                     stack.push(currentNode)
                     break
-                else:
-                    # caso nao seja o objetivo pega os sucessores dele
-                    for info in problem.getSuccessors(currentNode[0]):
-                        # caso o sucessor analisado ainda nao foi acessado
+                else: # caso nao seja o objetivo
+                    for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
                         tupleAux = None
-                        if not info in accessed:
+                        if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
                             print "Vou colocar na pilha: ", info
                             tupleAux = info
                             tupleAux += (currentNode, )
-                            # teste2.append(currentNode)
-                            # teste2.append(info)
-                            # teste = teste2
-                            # mappedArray.append(teste)
-                            mappedArray.append(tupleAux)
+                            mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
                             stack.push(info)
         
         accessed.pop(0)
-        # for x in mappedArray:
-        #     print x
-        #     print "-----"
-
-        # print "Start:", problem.getStartState()
-        # currentFather = [x for x in mappedArray if x[0] == (35, 1)] #(35, 1)
-        # print "PAPAPAPPAPAPAPAPAPPA"
-        # for x in currentFather:
-        #     print x
-        #     print "-----"
-        # print "PAPAPAPPAPAPAPAPAPPA"
-        # input()
         print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
-
         print "\nArray mapeado cru: ", mappedArray
 
         moveTo = []    
-        
-        # pega as informacoes do no objetivo
         print "No objetivo: ", (1, 1)
-        currentFather = [x for x in mappedArray if x[0] == (1, 1)]
-        moveTo.append(currentFather[0][3][1])
-        currentCoordinate = currentFather[0][3][0]
+        currentFather = [x for x in mappedArray if x[0] == (1, 1)] # pega as informacoes do no objetivo
+        moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
+        currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
 
         print "Realizando o mapeamento: "
         while True:
+            # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
             print "No atual: ", currentCoordinate
             currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
             moveTo.append(currentFather[0][3][1])
@@ -234,32 +198,18 @@ def depthFirstSearch(problem):
             print "Encontrado por: ", currentCoordinate
             # caso encontre o inicio do problema
             if currentCoordinate == problem.getStartState():
-                # procura o primeiro movimento realizado e insere no comeco do array  
-                # currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
-                # moveTo.insert(0, currentFather[0][3][1])
-                # # moveTo.insert(0, 'South') # Descomente isso para fazer o bigMaze rodar :)
-                # print "----------------- Primeiro mapeamento", currentFather
-                moveTo.remove('nil')
-                # moveTo.insert(0, before_goal[1])
-                print before_goal
-                currentFather = [x for x in mappedArray if x[0] == (1, 1)]
-                print currentFather
-                print "PAPAPAPPAPAPAPAPAPPA"
-                for x in currentFather:
+                moveTo.remove('nil') # remover lixo
+                currentFather = [x for x in mappedArray if x[0] == (1, 1)] # procura o primeiro movimento realizado e insere no comeco do array  
+                for x in currentFather: # por cada movimento realizado saindo da posicao inicial
                     moveTo.insert(0, x[1])
                     print "Custo atual para ", x[1], problem.getCostOfActions(moveTo) 
-                    if problem.getCostOfActions(moveTo[::-1]) < 999999:
-                        print "vou dar bom"
+                    if problem.getCostOfActions(moveTo[::-1]) < 999999: # verifica se e uma acao valida
+                        print "Encontrei uma acao valida!"
                         break
                     else:
                         moveTo.pop(0)
-                    print x
-                    print "-----"
-                print "PAPAPAPPAPAPAPAPAPPA"
-                # input()
                 break
         
-        # moveTo.pop()
         print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
         print "Tamanho: ", len(moveTo), "\n"
 
@@ -297,159 +247,123 @@ def breadthFirstSearch(problem):
         aux.append(problem.getStartState())
         aux.append('nil')
         aux.append('nil')
-        # aux => [(5, 5), 'nil', 'nil']
-        queue.push(aux)
-        before_goal = 0
-        mappedArray = []
+        queue.push(aux) # aux => [(5, 5), 'nil', 'nil']
+        mappedArray = [] # mappedArray => Array mapeado com pai e filhos
 
-        # mappedArray => Array mapeado com pai e filhos
         while not queue.isEmpty():
-            # armazena o no como acessado
-            currentNode = queue.pop()
-            # se esse no nao foi acessado
-            if not currentNode in accessed:
-                # seta ele como acessado
-                accessed.append(currentNode)
+            currentNode = queue.pop() # armazena o no como acessado
+            if not currentNode in accessed: # se esse no nao foi acessado
+                accessed.append(currentNode) # seta ele como acessado
                 print "Estou acessando o no: ", currentNode[0]
-                
-                # caso seja o no objetivo
-                if problem.isGoalState(currentNode[0]):
+
+                if problem.isGoalState(currentNode[0]): # caso seja o no objetivo
                     print "Chegou ao Final"
-                    before_goal = accessed[-2]
-                    print accessed[-2]
-                    # input()
+                    print "No que encontrou o objetivo: ", accessed[-2]
                     queue.push(currentNode)
                     break
-                else:
-                    # caso nao seja o objetivo pega os sucessores dele
-                    for info in problem.getSuccessors(currentNode[0]):
-                        # caso o sucessor analisado ainda nao foi acessado
+                else: # caso nao seja o objetivo
+                    for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
                         tupleAux = None
-                        if not info in accessed:
-                            print "Vou colocar na fila: ", info
+                        if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
+                            print "Vou colocar na pilha: ", info
                             tupleAux = info
                             tupleAux += (currentNode, )
-                            # print type(info)
-                            # print info[0]
-                            # break
-                            mappedArray.append(tupleAux)
+                            mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
                             queue.push(info)
         
         accessed.pop(0)
-
-        # print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
-
+        print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
         print "\nArray mapeado cru: ", mappedArray
+        
+        # metodo para encontrar o objetivo do 8puzzle no array mapeado
+        def findGoal():
+            for x in mappedArray:
+                if x[0].isGoal():
+                    return x
 
         moveTo = []    
-        
-        # def findGoal():
-        #     for x in mappedArray:
-        #         if x[0].isGoal():
-        #             return x
-        # print mappedArray[0][0]
-        # print mappedArray[0][0]
-        # print mappedArray[0][0]
-        # print type(mappedArray[0][0])
-        # print type(mappedArray[0][0])
-        # print type(mappedArray[0][0])
-        # print type(mappedArray[0][0])
-
         if not type(mappedArray[0][0]) == type(tuple()):
-            return [0]
-            # currentFather = findGoal()
-            # # print currentFather[0]
-            # # print currentFather[1]
-            # # print currentFather[2]
-            # # print currentFather[3]
-            # moveTo.append(currentFather[1])
-            # print "PAI ATUAL !!!", currentFather[3]
-            # print "COORDENADA ATUAL!@!!!", currentFather[0]
-            # currentCoordinate = currentFather[0]
-            # # print currentCoordinate
-            # # print currentCoordinate
-            # # print currentCoordinate
-            # # print currentCoordinate
-            # print "Realizando o mapeamento: "
-            # while True:
-            #     print "\n\n\n"
-            #     print "No atual: ", currentCoordinate
-            #     print "ANTES DE QUEBRAR INFORERNO DEBUGGG", mappedArray[0][0]
-            #     print "\n\n\n\n\n\n"
-            #     currentFather = [x for x in mappedArray if x[0] is currentCoordinate]
-            #     print "currentFather", currentFather
-            #     print "paipaipaipaipaia", currentFather
-            #     print "paipaipaipaipaia", currentFather[0]
-            #     print "paipaipaipaipaia", currentFather[0][1]
-            #     moveTo.append(currentFather[0][1])
+            currentFather = findGoal()[3]
+            # print "\n", currentFather
+            # print "\n", currentFather[0]
+            # print "\n", currentFather[1]
+            # print "\n", currentFather[2]
+            moveTo.append(currentFather[1])
+            print "PAI ATUAL !!!", currentFather # (<__main__.EightPuzzleState instance at 0x7f8562be18c0>, 'up', 1)
+            print "COORDENADA ATUAL!@!!!", currentFather[0]
+            currentCoordinate = currentFather[0]
+            print "Realizando o mapeamento: "
+            while True:
+                print "No atual: ", currentCoordinate
+                currentFather = [x for x in mappedArray if x[0] is currentCoordinate][0]
+                print "currentFather", currentFather
+                print "coordenada do pai", currentFather[3][0]
+                print "movimento do pai", currentFather[3][1]
+                moveTo.append(currentFather[3][1])
 
-            #     currentCoordinate = currentFather[0][0]
-            #     print "Encontrado por: ", currentCoordinate
-            #     # caso encontre o inicio do problema
+                currentCoordinate = currentFather[3][0]
+                print "Encontrado por: ", currentCoordinate
+                # caso encontre o inicio do problema
 
-            #     print problem.getStartState()
-            #     if currentCoordinate is problem.getStartState():
-            #         moveTo.remove('nil')
-            #         print before_goal
-            #         currentFather = findGoal()
-            #         print currentFather
-            #         print "PAPAPAPPAPAPAPAPAPPA"
-            #         for x in currentFather:
-            #             moveTo.insert(0, x[0])
-            #             print "Custo atual para ", x[1], problem.getCostOfActions(moveTo) 
-            #             if problem.getCostOfActions(moveTo[::-1]) < 999999:
-            #                 print "vou dar bom"
-            #                 break
-            #             else:
-            #                 moveTo.pop(0)
-            #             print x
-            #             print "-----"
-            #         print "PAPAPAPPAPAPAPAPAPPA"
-            #         # input()
-            #         break
+                # print problem.getStartState()
+
+                if currentCoordinate is problem.getStartState():
+                    moveTo.remove('nil')
+
+                    currentFather = findGoal()
+                    print currentFather
+                    print "PAPAPAPPAPAPAPAPAPPA"
+                    moveTo.insert(0, currentFather[3][1])
+                    break
+                    for x in currentFather:
+                        print "vou printar o x ", x
+                        moveTo.insert(0, x)
+                        print "Custo atual para ", x, problem.getCostOfActions(moveTo) 
+                        if problem.getCostOfActions(moveTo[::-1]) < 999999:
+                            print "vou dar bom"
+                            break
+                        else:
+                            moveTo.pop(0)
+                        print "-----"
+                    print "PAPAPAPPAPAPAPAPAPPA"
+                    # input()
+                    break
             
-            # # moveTo.pop()
-            # print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
-            # print "Tamanho: ", len(moveTo), "\n"
+            # moveTo.pop()
+            print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
+            print "Tamanho: ", len(moveTo), "\n"
 
-            # return moveTo[::-1]
+            return moveTo[::-1]
         else:
-            currentFather = [x for x in mappedArray if x[0] == (1, 1)]
+            print "No objetivo: ", (1, 1)
+            currentFather = [x for x in mappedArray if x[0] == (1, 1)] # pega as informacoes do no objetivo
         # return
-        # pega as informacoes do no objetivo
-        moveTo.append(currentFather[0][3][1])
-        currentCoordinate = currentFather[0][3][0]
+
+        moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
+        currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
 
         print "Realizando o mapeamento: "
         while True:
+            # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
             print "No atual: ", currentCoordinate
             currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
             moveTo.append(currentFather[0][3][1])
             currentCoordinate = currentFather[0][3][0]
             print "Encontrado por: ", currentCoordinate
             # caso encontre o inicio do problema
-
             if currentCoordinate == problem.getStartState():
-                moveTo.remove('nil')
-                print before_goal
-                currentFather = [x for x in mappedArray if x[0] == (1, 1)]
-                print currentFather
-                print "PAPAPAPPAPAPAPAPAPPA"
-                for x in currentFather:
+                moveTo.remove('nil') # remover lixo
+                currentFather = [x for x in mappedArray if x[0] == (1, 1)] # procura o primeiro movimento realizado e insere no comeco do array  
+                for x in currentFather: # por cada movimento realizado saindo da posicao inicial
                     moveTo.insert(0, x[1])
                     print "Custo atual para ", x[1], problem.getCostOfActions(moveTo) 
-                    if problem.getCostOfActions(moveTo[::-1]) < 999999:
-                        print "vou dar bom"
+                    if problem.getCostOfActions(moveTo[::-1]) < 999999: # verifica se e uma acao valida
+                        print "Encontrei uma acao valida!"
                         break
                     else:
                         moveTo.pop(0)
-                    print x
-                    print "-----"
-                print "PAPAPAPPAPAPAPAPAPPA"
-                # input()
                 break
         
-        # moveTo.pop()
         print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
         print "Tamanho: ", len(moveTo), "\n"
 
@@ -496,7 +410,8 @@ def uniformCostSearch(problem):
         isGoalState(self, state)
         getSuccessors(self, state)
         getCostOfActions(self, actions)
-    """
+
+
     def vini():
         acao = []
         acao.append('South')
@@ -507,6 +422,10 @@ def uniformCostSearch(problem):
         print "seila:", problem.getCostOfActions(acao)
         return acao
 
+        
+
+        
+    """
 
     return vini()
 
