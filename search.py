@@ -200,14 +200,9 @@ def depthFirstSearch(problem):
             if currentCoordinate == problem.getStartState():
                 moveTo.remove('nil') # remover lixo
                 currentFather = [x for x in mappedArray if x[0] == (1, 1)] # procura o primeiro movimento realizado e insere no comeco do array  
-                for x in currentFather: # por cada movimento realizado saindo da posicao inicial
-                    moveTo.insert(0, x[1])
-                    print "Custo atual para ", x[1], problem.getCostOfActions(moveTo) 
-                    if problem.getCostOfActions(moveTo[::-1]) < 999999: # verifica se e uma acao valida
-                        print "Encontrei uma acao valida!"
-                        break
-                    else:
-                        moveTo.pop(0)
+                print currentFather
+                moveTo.insert(0, currentFather[0][1])
+                print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
                 break
         
         print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
@@ -338,14 +333,8 @@ def breadthFirstSearch(problem):
             if currentCoordinate == problem.getStartState():
                 moveTo.remove('nil') # remover lixo
                 currentFather = [x for x in mappedArray if x[0] == (1, 1)] # procura o primeiro movimento realizado e insere no comeco do array  
-                for x in currentFather: # por cada movimento realizado saindo da posicao inicial
-                    moveTo.insert(0, x[1])
-                    print "Custo atual para ", x[1], problem.getCostOfActions(moveTo) 
-                    if problem.getCostOfActions(moveTo[::-1]) < 999999: # verifica se e uma acao valida
-                        print "Encontrei uma acao valida!"
-                        break
-                    else:
-                        moveTo.pop(0)
+                moveTo.insert(0, currentFather[0][1])
+                print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
                 break
         
         print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
@@ -386,8 +375,71 @@ def breadthFirstSearch(problem):
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
+    def andre():
+        print "Start:", problem.getStartState()
+        print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+        print "Start's successors:", problem.getSuccessors(problem.getStartState())
+        from util import PriorityQueue
+        pQueue = PriorityQueue()
+        accessed = []
 
+        aux = []
+        aux.append(problem.getStartState())
+        aux.append('nil')
+        aux.append('nil')
+        pQueue.push(aux, 0) # ex aux => [(5, 5), 'nil', 'nil']
+        mappedArray = [] # mappedArray => Array mapeado com pai e filhos
+        while not pQueue.isEmpty():
+            currentNode = pQueue.pop()
+            if not currentNode in accessed:
+                accessed.append(currentNode)
+                print "Estou acessando o no:", currentNode[0]
+                
+                if problem.isGoalState(currentNode[0]):
+                    print "Chegou ao Final"
+                    print "No que encontrou o objetivo: ", accessed[-2]
+                    pQueue.push(currentNode, currentNode[2])
+                    break
+                else: # caso nao seja o objetivo
+                    for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
+                        tupleAux = None
+                        if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
+                            print "Vou colocar na fila de prioridade: ", info
+                            tupleAux = info
+                            tupleAux += (currentNode, )
+                            mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
+                            pQueue.push(info, info[2])
+        accessed.pop(0)
+        print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
+        print "\nArray mapeado cru: ", mappedArray
+
+        moveTo = []    
+        print "No objetivo: ", (1, 1)
+        currentFather = [x for x in mappedArray if x[0] == (1, 1)] # pega as informacoes do no objetivo
+        moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
+        currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
+
+        print "Realizando o mapeamento: "
+        while True:
+            # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
+            print "No atual: ", currentCoordinate
+            currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
+            moveTo.append(currentFather[0][3][1])
+            currentCoordinate = currentFather[0][3][0]
+            print "Encontrado por: ", currentCoordinate
+            # caso encontre o inicio do problema
+            if currentCoordinate == problem.getStartState():
+                moveTo.remove('nil') # remover lixo
+                currentFather = [x for x in mappedArray if x[0] == (1, 1)] # procura o primeiro movimento realizado e insere no comeco do array  
+                print currentFather
+                moveTo.insert(0, currentFather[0][1])
+                print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
+                break
+        
+        print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
+        print "Tamanho: ", len(moveTo), "\n"
+
+        return moveTo[::-1]
     """
     codigos do objeto problem:
         getStartState(self)
@@ -411,7 +463,7 @@ def uniformCostSearch(problem):
         
     """
 
-    return vini()
+    return andre()
 
 def nullHeuristic(state, problem=None):
     """
