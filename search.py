@@ -311,25 +311,9 @@ def breadthFirstSearch(problem):
                     moveTo.remove('nil')
 
                     currentFather = findGoal()
-                    print currentFather
-                    print "PAPAPAPPAPAPAPAPAPPA"
-                    moveTo.insert(0, currentFather[3][1])
-                    break
-                    for x in currentFather:
-                        print "vou printar o x ", x
-                        moveTo.insert(0, x)
-                        print "Custo atual para ", x, problem.getCostOfActions(moveTo) 
-                        if problem.getCostOfActions(moveTo[::-1]) < 999999:
-                            print "vou dar bom"
-                            break
-                        else:
-                            moveTo.pop(0)
-                        print "-----"
-                    print "PAPAPAPPAPAPAPAPAPPA"
-                    # input()
+                    moveTo.insert(0, currentFather[1]) #pega o caminho do filho
                     break
             
-            # moveTo.pop()
             print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
             print "Tamanho: ", len(moveTo), "\n"
 
