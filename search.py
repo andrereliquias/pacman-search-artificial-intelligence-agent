@@ -146,7 +146,7 @@ def depthFirstSearch(problem):
             # caso encontre o inicio do problema
             if currentCoordinate == problem.getStartState():
                 moveTo.remove('nil') # remover lixo
-                currentFather = [x for x in mappedArray if x[0] == (1, 1)] # procura o primeiro movimento realizado e insere no comeco do array  
+                currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # procura o primeiro movimento realizado e insere no comeco do array  
                 moveTo.insert(0, currentFather[0][1])
                 print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
                 break
