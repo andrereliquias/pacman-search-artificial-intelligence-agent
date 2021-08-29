@@ -310,7 +310,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         from util import PriorityQueue
         pQueue = PriorityQueue()
         accessed = []
-        # return [1]
         aux = []
         aux.append(problem.getStartState())
         aux.append('nil')
