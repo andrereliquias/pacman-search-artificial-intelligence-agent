@@ -93,205 +93,196 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
 
     from util import Stack
-            
-    def andre():
-        stack = Stack()
-        accessed = []
+    stack = Stack()
+    accessed = []
 
-        aux = []
-        aux.append(problem.getStartState())
-        aux.append('nil')
-        aux.append('nil')
-        stack.push(aux) # aux => [(5, 5), 'nil', 'nil']
-        mappedArray = [] # mappedArray => Array mapeado com pai e filhos
+    aux = []
+    aux.append(problem.getStartState())
+    aux.append('nil')
+    aux.append('nil')
+    stack.push(aux) # aux => [(5, 5), 'nil', 'nil']
+    mappedArray = [] # mappedArray => Array mapeado com pai e filhos
 
-        while not stack.isEmpty():
-            currentNode = stack.pop() # armazena o no como atual
-            if not currentNode in accessed: # se esse no nao foi acessado
-                accessed.append(currentNode) # seta ele como acessado
-                print "Estou acessando o no: ", currentNode[0]
+    while not stack.isEmpty():
+        currentNode = stack.pop() # armazena o no como atual
+        if not currentNode in accessed: # se esse no nao foi acessado
+            accessed.append(currentNode) # seta ele como acessado
+            print "Estou acessando o no: ", currentNode[0]
 
-                if problem.isGoalState(currentNode[0]): # caso seja o no objetivo
-                    print "Chegou ao Final"
-                    print "No que encontrou o objetivo: ", accessed[-2]
-                    stack.push(currentNode)
-                    break
-                else: # caso nao seja o objetivo
-                    for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
-                        tupleAux = None
-                        if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
-                            print "Vou colocar na pilha: ", info
-                            tupleAux = info
-                            tupleAux += (currentNode, )
-                            mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
-                            stack.push(info)
-        
-        accessed.pop(0)
-        print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
-        print "\nArray mapeado cru: ", mappedArray
-
-        moveTo = []    
-        currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # pega as informacoes do no objetivo
-        moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
-        currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
-
-        print "Realizando o mapeamento: "
-        while True:
-            # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
-            print "No atual: ", currentCoordinate
-            currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
-            moveTo.append(currentFather[0][3][1])
-            currentCoordinate = currentFather[0][3][0]
-            print "Encontrado por: ", currentCoordinate
-            # caso encontre o inicio do problema
-            if currentCoordinate == problem.getStartState():
-                moveTo.remove('nil') # remover lixo
-                currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # procura o primeiro movimento realizado e insere no comeco do array  
-                moveTo.insert(0, currentFather[0][1])
-                print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
+            if problem.isGoalState(currentNode[0]): # caso seja o no objetivo
+                print "Chegou ao Final"
+                print "No que encontrou o objetivo: ", accessed[-2]
+                stack.push(currentNode)
                 break
-        
-        print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
-        print "Tamanho: ", len(moveTo), "\n"
+            else: # caso nao seja o objetivo
+                for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
+                    tupleAux = None
+                    if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
+                        print "Vou colocar na pilha: ", info
+                        tupleAux = info
+                        tupleAux += (currentNode, )
+                        mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
+                        stack.push(info)
+    
+    accessed.pop(0)
+    print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
+    print "\nArray mapeado cru: ", mappedArray
 
-        return moveTo[::-1]
+    moveTo = []    
+    currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # pega as informacoes do no objetivo
+    moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
+    currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
 
-    return andre()
+    print "Realizando o mapeamento: "
+    while True:
+        # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
+        print "No atual: ", currentCoordinate
+        currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
+        moveTo.append(currentFather[0][3][1])
+        currentCoordinate = currentFather[0][3][0]
+        print "Encontrado por: ", currentCoordinate
+        # caso encontre o inicio do problema
+        if currentCoordinate == problem.getStartState():
+            moveTo.remove('nil') # remover lixo
+            currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # procura o primeiro movimento realizado e insere no comeco do array  
+            moveTo.insert(0, currentFather[0][1])
+            print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
+            break
+    
+    print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
+    print "Tamanho: ", len(moveTo), "\n"
+
+    return moveTo[::-1]
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     
-    def andre():
-        from util import Queue  
-        queue = Queue()
-        accessed = []
+    from util import Queue  
+    queue = Queue()
+    accessed = []
 
-        aux = []
-        aux.append(problem.getStartState())
-        aux.append('nil')
-        aux.append('nil')
-        queue.push(aux) # aux => [(5, 5), 'nil', 'nil']
-        mappedArray = [] # mappedArray => Array mapeado com pai e filhos
+    aux = []
+    aux.append(problem.getStartState())
+    aux.append('nil')
+    aux.append('nil')
+    queue.push(aux) # aux => [(5, 5), 'nil', 'nil']
+    mappedArray = [] # mappedArray => Array mapeado com pai e filhos
 
-        while not queue.isEmpty():
-            currentNode = queue.pop() # armazena o no como acessado
-            if not currentNode in accessed: # se esse no nao foi acessado
-                accessed.append(currentNode) # seta ele como acessado
-                print "Estou acessando o no: ", currentNode[0]
+    while not queue.isEmpty():
+        currentNode = queue.pop() # armazena o no como acessado
+        if not currentNode in accessed: # se esse no nao foi acessado
+            accessed.append(currentNode) # seta ele como acessado
+            print "Estou acessando o no: ", currentNode[0]
 
-                if problem.isGoalState(currentNode[0]): # caso seja o no objetivo
-                    print "Chegou ao Final"
-                    print "No que encontrou o objetivo: ", accessed[-2]
-                    queue.push(currentNode)
-                    break
-                else: # caso nao seja o objetivo
-                    for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
-                        tupleAux = None
-                        if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
-                            print "Vou colocar na fila: ", info
-                            tupleAux = info
-                            tupleAux += (currentNode, )
-                            mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
-                            queue.push(info)
-        
-        accessed.pop(0)
-        print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
-        print "\nArray mapeado cru: ", mappedArray
-        
-        moveTo = []    
-        currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # pega as informacoes do no objetivo
-
-        moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
-        currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
-
-        print "Realizando o mapeamento: "
-        while True:
-            # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
-            print "No atual: ", currentCoordinate
-            currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
-            moveTo.append(currentFather[0][3][1])
-            currentCoordinate = currentFather[0][3][0]
-            print "Encontrado por: ", currentCoordinate
-            # caso encontre o inicio do problema
-            if currentCoordinate == problem.getStartState():
-                moveTo.remove('nil') # remover lixo
-                currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # procura o primeiro movimento realizado e insere no comeco do array  
-                moveTo.insert(0, currentFather[0][1])
-                print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
+            if problem.isGoalState(currentNode[0]): # caso seja o no objetivo
+                print "Chegou ao Final"
+                print "No que encontrou o objetivo: ", accessed[-2]
+                queue.push(currentNode)
                 break
-        
-        print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
-        print "Tamanho: ", len(moveTo), "\n"
+            else: # caso nao seja o objetivo
+                for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
+                    tupleAux = None
+                    if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
+                        print "Vou colocar na fila: ", info
+                        tupleAux = info
+                        tupleAux += (currentNode, )
+                        mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
+                        queue.push(info)
+    
+    accessed.pop(0)
+    print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
+    print "\nArray mapeado cru: ", mappedArray
+    
+    moveTo = []    
+    currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # pega as informacoes do no objetivo
 
-        return moveTo[::-1]
-        
-    return andre()
+    moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
+    currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
 
+    print "Realizando o mapeamento: "
+    while True:
+        # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
+        print "No atual: ", currentCoordinate
+        currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
+        moveTo.append(currentFather[0][3][1])
+        currentCoordinate = currentFather[0][3][0]
+        print "Encontrado por: ", currentCoordinate
+        # caso encontre o inicio do problema
+        if currentCoordinate == problem.getStartState():
+            moveTo.remove('nil') # remover lixo
+            currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # procura o primeiro movimento realizado e insere no comeco do array  
+            moveTo.insert(0, currentFather[0][1])
+            print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
+            break
+    
+    print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
+    print "Tamanho: ", len(moveTo), "\n"
+
+    return moveTo[::-1]
+    
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    def andre():
-        from util import PriorityQueue
-        pQueue = PriorityQueue()
-        accessed = []
 
-        aux = []
-        aux.append(problem.getStartState())
-        aux.append('nil')
-        aux.append('nil')
-        pQueue.push(aux, 0) # ex aux => [(5, 5), 'nil', 'nil']
-        mappedArray = [] # mappedArray => Array mapeado com pai e filhos
-        while not pQueue.isEmpty():
-            currentNode = pQueue.pop()
-            if not currentNode in accessed:
-                accessed.append(currentNode)
-                print "Estou acessando o no:", currentNode[0]
-                
-                if problem.isGoalState(currentNode[0]):
-                    print "Chegou ao Final"
-                    print "No que encontrou o objetivo: ", accessed[-2]
-                    pQueue.push(currentNode, currentNode[2])
-                    break
-                else: # caso nao seja o objetivo
-                    for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
-                        tupleAux = None
-                        if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
-                            print "Vou colocar na fila de prioridade: ", info
-                            tupleAux = info
-                            tupleAux += (currentNode, )
-                            mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
-                            pQueue.push(info, info[2])
-        accessed.pop(0)
-        print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
-        print "\nArray mapeado cru: ", mappedArray
+    from util import PriorityQueue
+    pQueue = PriorityQueue()
+    accessed = []
 
-        moveTo = []    
-        currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # pega as informacoes do no objetivo
-        moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
-        currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
-
-        print "Realizando o mapeamento: "
-        while True:
-            # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
-            print "No atual: ", currentCoordinate
-            currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
-            moveTo.append(currentFather[0][3][1])
-            currentCoordinate = currentFather[0][3][0]
-            print "Encontrado por: ", currentCoordinate
-            # caso encontre o inicio do problema
-            if currentCoordinate == problem.getStartState():
-                moveTo.remove('nil') # remover lixo
-                currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # procura o primeiro movimento realizado e insere no comeco do array  
-                print currentFather
-                moveTo.insert(0, currentFather[0][1])
-                print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
+    aux = []
+    aux.append(problem.getStartState())
+    aux.append('nil')
+    aux.append('nil')
+    pQueue.push(aux, 0) # ex aux => [(5, 5), 'nil', 'nil']
+    mappedArray = [] # mappedArray => Array mapeado com pai e filhos
+    while not pQueue.isEmpty():
+        currentNode = pQueue.pop()
+        if not currentNode in accessed:
+            accessed.append(currentNode)
+            print "Estou acessando o no:", currentNode[0]
+            
+            if problem.isGoalState(currentNode[0]):
+                print "Chegou ao Final"
+                print "No que encontrou o objetivo: ", accessed[-2]
+                pQueue.push(currentNode, currentNode[2])
                 break
-        
-        print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
-        print "Tamanho: ", len(moveTo), "\n"
+            else: # caso nao seja o objetivo
+                for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
+                    tupleAux = None
+                    if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
+                        print "Vou colocar na fila de prioridade: ", info
+                        tupleAux = info
+                        tupleAux += (currentNode, )
+                        mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
+                        pQueue.push(info, info[2])
+    accessed.pop(0)
+    print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
+    print "\nArray mapeado cru: ", mappedArray
 
-        return moveTo[::-1]
+    moveTo = []    
+    currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # pega as informacoes do no objetivo
+    moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
+    currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
 
-    return andre()
+    print "Realizando o mapeamento: "
+    while True:
+        # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
+        print "No atual: ", currentCoordinate
+        currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
+        moveTo.append(currentFather[0][3][1])
+        currentCoordinate = currentFather[0][3][0]
+        print "Encontrado por: ", currentCoordinate
+        # caso encontre o inicio do problema
+        if currentCoordinate == problem.getStartState():
+            moveTo.remove('nil') # remover lixo
+            currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # procura o primeiro movimento realizado e insere no comeco do array  
+            print currentFather
+            moveTo.insert(0, currentFather[0][1])
+            print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
+            break
+    
+    print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
+    print "Tamanho: ", len(moveTo), "\n"
+
+    return moveTo[::-1]
 
 def nullHeuristic(state, problem=None):
     """
@@ -302,72 +293,66 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    def andre():
-        print "Start:", problem.getStartState()
-        print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-        print "Start's successors:", problem.getSuccessors(problem.getStartState())
-        print "heuristic", heuristic((1, 1), problem)
-        from util import PriorityQueue
-        pQueue = PriorityQueue()
-        accessed = []
-        aux = []
-        aux.append(problem.getStartState())
-        aux.append('nil')
-        aux.append('nil')
-        pQueue.push(aux, 0) # ex aux => [(5, 5), 'nil', 'nil']
-        mappedArray = [] # mappedArray => Array mapeado com pai e filhos
-        while not pQueue.isEmpty():
-            currentNode = pQueue.pop()
-            if not currentNode in accessed:
-                accessed.append(currentNode)
-                print "Estou acessando o no:", currentNode[0]
-                
-                if problem.isGoalState(currentNode[0]):
-                    print "Chegou ao Final"
-                    print "No que encontrou o objetivo: ", accessed[-2]
-                    pQueue.push(currentNode, heuristic(currentNode[0], problem))
-                    break
-                else: # caso nao seja o objetivo
-                    for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
-                        tupleAux = None
-                        if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
-                            print "Vou colocar na fila de prioridade: ", info
-                            tupleAux = info
-                            tupleAux += (currentNode, )
-                            mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
-                            pQueue.push(info, heuristic(info[0], problem))
-        accessed.pop(0)
-        print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
-        print "\nArray mapeado cru: ", mappedArray
 
-        moveTo = []
-
-        currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # pega as informacoes do no objetivo
-        moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
-        currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
-        print "Realizando o mapeamento: "
-        while True:
-        # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
-            print "No atual: ", currentCoordinate
-            currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
-            moveTo.append(currentFather[0][3][1])
-            currentCoordinate = currentFather[0][3][0]
-            print "Encontrado por: ", currentCoordinate
-            # caso encontre o inicio do problema
-            if currentCoordinate == problem.getStartState():
-                moveTo.remove('nil') # remover lixo
-                currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # procura o primeiro movimento realizado e insere no comeco do array  
-                print currentFather
-                moveTo.insert(0, currentFather[0][1])
-                print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
+    from util import PriorityQueue
+    pQueue = PriorityQueue()
+    accessed = []
+    aux = []
+    aux.append(problem.getStartState())
+    aux.append('nil')
+    aux.append('nil')
+    pQueue.push(aux, 0) # ex aux => [(5, 5), 'nil', 'nil']
+    mappedArray = [] # mappedArray => Array mapeado com pai e filhos
+    while not pQueue.isEmpty():
+        currentNode = pQueue.pop()
+        if not currentNode in accessed:
+            accessed.append(currentNode)
+            print "Estou acessando o no:", currentNode[0]
+            
+            if problem.isGoalState(currentNode[0]):
+                print "Chegou ao Final"
+                print "No que encontrou o objetivo: ", accessed[-2]
+                pQueue.push(currentNode, heuristic(currentNode[0], problem))
                 break
-        
-        print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
-        print "Tamanho: ", len(moveTo), "\n"
+            else: # caso nao seja o objetivo
+                for info in problem.getSuccessors(currentNode[0]): # pega os sucessores dele
+                    tupleAux = None
+                    if not info in accessed: # caso o sucessor analisado ainda nao foi acessado
+                        print "Vou colocar na fila de prioridade: ", info
+                        tupleAux = info
+                        tupleAux += (currentNode, )
+                        mappedArray.append(tupleAux) # armazena em um array o mapeamento pai -> filho
+                        pQueue.push(info, heuristic(info[0], problem))
+    accessed.pop(0)
+    print "\nCaminho percorrido pelo algoritmo de busca: ", accessed
+    print "\nArray mapeado cru: ", mappedArray
 
-        return moveTo[::-1]
-    return andre()
+    moveTo = []
 
+    currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # pega as informacoes do no objetivo
+    moveTo.append(currentFather[0][3][1]) # pega o passo do pai do no objetivo
+    currentCoordinate = currentFather[0][3][0] # seta a coordenada atual de verificacao como sendo a coordenada do pai
+    print "Realizando o mapeamento: "
+    while True:
+    # vai interar pelo mapeamento navegando pelo pai de cada filho ate chegar no problema inicial
+        print "No atual: ", currentCoordinate
+        currentFather = [x for x in mappedArray if x[0] == currentCoordinate]
+        moveTo.append(currentFather[0][3][1])
+        currentCoordinate = currentFather[0][3][0]
+        print "Encontrado por: ", currentCoordinate
+        # caso encontre o inicio do problema
+        if currentCoordinate == problem.getStartState():
+            moveTo.remove('nil') # remover lixo
+            currentFather = [x for x in mappedArray if problem.isGoalState(x[0])] # procura o primeiro movimento realizado e insere no comeco do array  
+            print currentFather
+            moveTo.insert(0, currentFather[0][1])
+            print "Custo atual para ", currentFather[0][1], problem.getCostOfActions(moveTo[::-1]) 
+            break
+    
+    print "\nMovimentos necessarios para vencer: ", moveTo[::-1]
+    print "Tamanho: ", len(moveTo), "\n"
+
+    return moveTo[::-1]
 
 # Abbreviations
 bfs = breadthFirstSearch
